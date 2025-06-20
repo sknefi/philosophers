@@ -21,7 +21,7 @@ long	ft_atol(const char *str)
 			sign = (-1);
 		str++;
 	}
-	while (0 <= (int)*str && (int)*str <= 9)
+	while ('0' <= (int)*str && (int)*str <= '9')
 	{
 		nb = nb * 10 + *str - '0';
 		str++;
