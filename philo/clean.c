@@ -15,11 +15,15 @@ void	clean_forks(t_table *table)
 {
 	int		i;
 
+	if (!table->forks)
+		return ;
 	i = 0;
 	while (i < table->no_philosophers)
+	{
+		pthread_mutex_destroy(&table->forks[i]->mutex);
 		free(table->forks[i++]);
-	if (table->forks)
-		free(table->forks);
+	}
+	free(table->forks);
 }
 
 void	clean_table(t_table *table)
