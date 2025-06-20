@@ -1,6 +1,6 @@
 #include "philo.h"
 
-int	init_table(int argc, char **argv, t_table *table)
+static int	init_args(int argc, char **argv, t_table *table)
 {
 	if (argc != 6 && argc != 7)
 		return (1);
@@ -15,16 +15,59 @@ int	init_table(int argc, char **argv, t_table *table)
 	return (0);
 }
 
-t_philo	*init_philos(t_table *table)
+static int	init_philos(t_table *table)
 {
-	int		i;
-	t_philo	*philos;
+	int	i;
 
-	philos = (t_philo *)malloc(sizeof(t_philo) * table->no_philosophers);
-	if (!philos)
-		return (NULL);
+	table->philos = (t_philo **)malloc(sizeof(t_philo *) * table->no_philosophers);
+	if (!table->philos)
+		return (1);
 	i = 0;
 	while (i < table->no_philosophers)
-		philos[i++].id = i;
-	return (philos);
+	{
+		table->philos[i] = (t_philo *)malloc(sizeof(t_philo));
+		if (!table->philos[i])
+			return (1);
+		ft_memset(table->philos[i], 0, sizeof(t_philo));
+		table->philos[i]->id = i + 1;
+		i++;
+	}
+	return (0);
+}
+
+static int	init_forks(t_table *table)
+{
+	int	i;
+
+	table->forks = (t_fork **)malloc(sizeof(t_fork *) * table->no_philosophers);
+	if (!table->forks)
+		return (1);
+	i = 0;
+	while (i < table->no_philosophers)
+	{
+		table->forks[i] = (t_fork *)malloc(sizeof(t_fork));
+		if (!table->forks[i])
+			return (1);
+		table->forks[i]->id = i + 1;
+		if (pthread_mutex_init(&table->forks[i]->mutex, NULL) != 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+t_table	*init_table(int argc, char **argv)
+{
+	t_table	*table;
+
+	table = (t_table *)malloc(sizeof(t_table));
+	if (!table)
+		return (NULL);
+	if (init_args(argc, argv, table))
+		return (clean_table(table), NULL);
+	if (init_philos(table))
+		return (clean_table(table), NULL);
+	if (init_forks(table))
+		return (clean_table(table), NULL);
+	return (table);
 }

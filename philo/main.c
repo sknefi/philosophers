@@ -3,9 +3,11 @@
 int main(int argc, char *argv[])
 {
 	t_table	*table;
-	t_philo	*philos;
 
-	if (init_table(argc, argv, &table))
+	table = init_table(argc, argv);
+	if (!table)
 		return (EXIT_FAILURE);
+
+	clean_table(table);
     return (EXIT_SUCCESS);
 }
