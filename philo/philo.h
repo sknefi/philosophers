@@ -71,7 +71,7 @@ typedef struct s_table
 }	t_table;
 
 // Function declarations
-t_table	*init_table(int argc, char **argv);
+int	init_table(int argc, char **argv, t_table *table);
 long	ft_atol(const char *str);
 long	get_time(void);
 void	print_msg(t_table *table, int philo_id, char *msg);
@@ -79,7 +79,6 @@ void	clean_philos(t_table *table);
 void	clean_forks(t_table *table);
 void	clean_table(t_table *table);
 void	*ft_memset(void *b, int c, size_t len);
-
-void	print_philos(t_table *table);
+void	start_dinner(t_table *table);
 
 #endif

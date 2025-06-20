@@ -53,26 +53,23 @@ static int	init_forks(t_table *table)
 	return (0);
 }
 
-t_table	*init_table(int argc, char **argv)
+int	init_table(int argc, char **argv, t_table *table)
 {
-	t_table	*table;
-
-	table = (t_table *)malloc(sizeof(t_table));
-	if (!table)
-		return (NULL);
 	init_args(argc, argv, table);
 	if (table->no_philosophers == 1)
-		return (printf(R "Error: Invalid number of philosophers\n"), NULL);
+		return (printf(R "Error: Invalid number of philosophers\n" RES), 1);
 	if (pthread_mutex_init(&table->print_mutex, NULL) != 0)
-		return (NULL);
+		return (1);
 	if (pthread_mutex_init(&table->simulation_mutex, NULL) != 0)
-		return (NULL);
+		return (1);
+	if (pthread_mutex_init(&table->death_mutex, NULL) != 0)
+		return (1);
 	if (init_philos(table))
-		return (clean_table(table), NULL);
+		return (1);
 	if (init_forks(table))
-		return (clean_table(table), NULL);
+		return (1);
 	table->death_flag = 0;
 	table->start_time = get_time();
 	table->simulation_over = 0;
-	return (table);
+	return (0);
 }
