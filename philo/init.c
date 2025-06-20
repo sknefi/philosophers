@@ -65,10 +65,14 @@ t_table	*init_table(int argc, char **argv)
 		return (printf(R "Error: Invalid number of philosophers\n"), NULL);
 	if (pthread_mutex_init(&table->print_mutex, NULL) != 0)
 		return (NULL);
+	if (pthread_mutex_init(&table->simulation_mutex, NULL) != 0)
+		return (NULL);
 	if (init_philos(table))
 		return (clean_table(table), NULL);
 	if (init_forks(table))
 		return (clean_table(table), NULL);
+	table->death_flag = 0;
 	table->start_time = get_time();
+	table->simulation_over = 0;
 	return (table);
 }

@@ -20,7 +20,6 @@ void	print_philos(t_table *table)
 
 	assign_forks(table);
 	i = 0;
-	printf("table->no_philosophers: %d\n", table->no_philosophers);
 	while (i < table->no_philosophers)
 	{
 		printf("==============\n");
