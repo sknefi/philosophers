@@ -1,19 +1,31 @@
-NAME = a 
+NAME = philo
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = main.c utils.c init.c
+SRCDIR = .
+OBJDIR = obj
 
-OBJS = $(SRCS:.c=.o)
+SRCS = 	main.c \
+		utils.c \
+		init.c \
+		clean.c
+
+OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)
