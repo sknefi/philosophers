@@ -10,7 +10,8 @@ SRCS = 	main.c \
 		utils.c \
 		init.c \
 		clean.c \
-		philo.c
+		philo.c \
+		philo_utils.c
 
 OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 

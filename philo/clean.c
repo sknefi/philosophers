@@ -4,11 +4,12 @@ void	clean_philos(t_table *table)
 {
 	int		i;
 
+	if (!table->philos)
+		return ;
 	i = 0;
 	while (i < table->no_philosophers)
 		free(table->philos[i++]);
-	if (table->philos)
-		free(table->philos);
+	free(table->philos);
 }
 
 void	clean_forks(t_table *table)
@@ -32,5 +33,6 @@ void	clean_table(t_table *table)
 		return ;
 	clean_philos(table);
 	clean_forks(table);
+	pthread_mutex_destroy(&table->print_mutex);
 	free(table);
 }

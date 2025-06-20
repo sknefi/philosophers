@@ -63,9 +63,12 @@ t_table	*init_table(int argc, char **argv)
 	init_args(argc, argv, table);
 	if (table->no_philosophers == 1)
 		return (printf(R "Error: Invalid number of philosophers\n"), NULL);
+	if (pthread_mutex_init(&table->print_mutex, NULL) != 0)
+		return (NULL);
 	if (init_philos(table))
 		return (clean_table(table), NULL);
 	if (init_forks(table))
 		return (clean_table(table), NULL);
+	table->start_time = get_time();
 	return (table);
 }

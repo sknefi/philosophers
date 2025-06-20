@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <limits.h>
+#include <sys/time.h>
 
 # define R "\033[31m"
 # define G "\033[32m"
@@ -33,17 +34,21 @@ typedef struct s_philo
 typedef struct s_table
 {
 	int				no_philosophers;
+	long			start_time;
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
 	long			num_times_each_philosopher_must_eat;
 	t_philo			**philos;
 	t_fork			**forks;
+	pthread_mutex_t	print_mutex;
 }	t_table;
 
 // Function declarations
 t_table	*init_table(int argc, char **argv);
 long	ft_atol(const char *str);
+long	get_time(void);
+void	print_msg(t_table *table, int philo_id, char *msg);
 void	clean_philos(t_table *table);
 void	clean_forks(t_table *table);
 void	clean_table(t_table *table);
