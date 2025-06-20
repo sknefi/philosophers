@@ -34,6 +34,7 @@ void	clean_table(t_table *table)
 	clean_philos(table);
 	clean_forks(table);
 	pthread_mutex_destroy(&table->print_mutex);
-	pthread_mutex_destroy(&table->sim_mutex);
+	pthread_mutex_destroy(&table->simulation_mutex);
+	pthread_mutex_destroy(&table->death_mutex);
 	free(table);
 }
