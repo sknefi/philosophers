@@ -55,8 +55,11 @@ static int	init_forks(t_table *table)
 
 int	init_table(int argc, char **argv, t_table *table)
 {
+	table->death_flag = 0;
+	table->start_time = get_time();
+	table->simulation_over = 0;
 	init_args(argc, argv, table);
-	if (table->no_philosophers == 1)
+	if (table->no_philosophers == 1) // take a fork and wait for die
 		return (printf(R "Error: Invalid number of philosophers\n" RES), 1);
 	if (pthread_mutex_init(&table->print_mutex, NULL) != 0)
 		return (1);
@@ -68,8 +71,5 @@ int	init_table(int argc, char **argv, t_table *table)
 		return (1);
 	if (init_forks(table))
 		return (1);
-	table->death_flag = 0;
-	table->start_time = get_time();
-	table->simulation_over = 0;
 	return (0);
 }

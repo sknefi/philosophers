@@ -63,8 +63,8 @@ typedef struct s_table
 	long			time_to_eat;
 	long			time_to_sleep;
 	long			num_times_each_philosopher_must_eat;
-	t_philo			**philos;
 	t_fork			**forks;
+	t_philo			**philos;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	simulation_mutex;

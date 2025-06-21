@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
 	if (init_table(argc, argv, table))
 		return (EXIT_FAILURE);
 
-	start_dinner(table);
 	print_philos(table);
+	start_dinner(table);
 	clean_table(table);
     return (EXIT_SUCCESS);
 }
