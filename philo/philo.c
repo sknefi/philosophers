@@ -53,7 +53,7 @@ static void	*dinner_routine(void *arg)
 	// For now, let's just print the philosopher ID to test
 	printf("Philosopher %d is starting dinner\n", philo->id);
 	// while 1
-		// if death_flag or simulation_over (from watchdog)
+		// if death_flag or all_philos_full_flag (from watchdog)
 		// take_forks_eat_think_sleep()
 	return (NULL);
 }

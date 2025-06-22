@@ -51,13 +51,13 @@ typedef struct s_philo
 	forks contains all the information about the forks,
 	print_mutex is used to print messages (so no 2 threads write in the same time),
 	death_mutex is used to check if a philosopher is dead (death_flag),
-	simulation_mutex is used to check if the simulation is over (simulation_over)
+	all_philos_full_mutex is used to check if the simulation is over (all_philos_full_flag)
 */
 typedef struct s_table
 {
 	int				death_flag;
 	int				no_philosophers;
-	int				simulation_over;
+	int				all_philos_full_flag;
 	long			start_time;
 	long			time_to_die;
 	long			time_to_eat;
@@ -67,7 +67,7 @@ typedef struct s_table
 	t_philo			**philos;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	death_mutex;
-	pthread_mutex_t	simulation_mutex;
+	pthread_mutex_t	all_philos_full_mutex;
 }	t_table;
 
 // Function declarations
