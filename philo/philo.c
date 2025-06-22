@@ -66,7 +66,7 @@ static void	*dinner_routine(void *arg)
 	dinner_args = (t_dinner_args *)arg;
 	table = dinner_args->table;
 	philo = dinner_args->philo;
-	while (!is_simulation_over(table))
+	while (!is_simulation_over(table) && !is_philo_full(table, philo))
 		take_forks_eat_think_sleep(table, philo);
 	return (NULL);
 }

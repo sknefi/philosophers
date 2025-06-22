@@ -14,13 +14,18 @@ void	print_msg(t_table *table, int philo_id, char *msg)
 
 int	is_philo_full(t_table *table, t_philo *philo)
 {
+	int	res;
+
+	res = 0;
+	pthread_mutex_lock(&philo->philo_mutex);
 	if (table->num_times_each_philosopher_must_eat != -1
 		&& philo->meals_eaten >= table->num_times_each_philosopher_must_eat)
 	{
 		philo->is_full = 1;
-		return (1);
+		res = 1;
 	}
-	return (0);
+	pthread_mutex_unlock(&philo->philo_mutex);	
+	return (res);
 }
 
 void	assign_forks(t_table *table)
