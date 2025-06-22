@@ -41,3 +41,20 @@ void	*ft_memset(void *b, int c, size_t len)
 	}
 	return (b);
 }
+
+void	precise_usleep(long time_in_micro)
+{
+	long	start;
+	
+	start = get_time();
+	while ((get_time() - start) < time_in_micro)
+		usleep(100);
+}
+
+long	get_time(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000000) + tv.tv_usec);
+}

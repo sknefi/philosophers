@@ -33,6 +33,8 @@ typedef struct s_fork
  * (if the last parameter of input was given)
  * @param meals_eaten the number of meals the philosopher has eaten
  * (to check if he is full)
+ * @param philo_mutex I have to lock the philo with this mutex, because
+ * not just philo is accessing data but also watchdog
 */
 typedef struct s_philo
 {
@@ -43,6 +45,7 @@ typedef struct s_philo
 	t_fork			*left_fork;
 	t_fork			*right_fork;
 	pthread_t		thread_id;
+	pthread_mutex_t	philo_mutex;
 }	t_philo;
 
 /*
@@ -71,7 +74,7 @@ typedef struct s_table
 }	t_table;
 
 // Function declarations
-int	init_table(int argc, char **argv, t_table *table);
+int		init_table(int argc, char **argv, t_table *table);
 long	ft_atol(const char *str);
 long	get_time(void);
 void	print_msg(t_table *table, int philo_id, char *msg);
@@ -80,5 +83,9 @@ void	clean_forks(t_table *table);
 void	clean_table(t_table *table);
 void	*ft_memset(void *b, int c, size_t len);
 void	start_dinner(t_table *table);
+void	precise_usleep(long time_in_micro);
+
+void	assign_forks(t_table *table);
+int		is_philo_full(t_table *table, t_philo *philo);
 
 #endif

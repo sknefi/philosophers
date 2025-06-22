@@ -1,46 +1,45 @@
 #include "philo.h"
 
-static void	assign_forks(t_table *table)
+// return the id of a first fork so when putting them down i put the first one down first
+static int	take_forks(t_table *table, t_philo *philo)
 {
-	int	i;
+	t_fork	*first_fork;
+	t_fork	*second_fork;
 
-	i = 0;
-	while (i < table->no_philosophers)
+	if (philo->id % 2 == 0)
 	{
-		table->philos[i]->left_fork = table->forks[i];
-		table->philos[i]->right_fork = table->forks[(i + 1) % table->no_philosophers];
-		i++;
+		first_fork = philo->left_fork;
+		second_fork = philo->right_fork;
 	}
-}
-
-static void	is_philo_full(t_table *table, t_philo *philo)
-{
-	if (table->num_times_each_philosopher_must_eat != -1
-		&& philo->meals_eaten >= table->num_times_each_philosopher_must_eat)
+	else
 	{
-		philo->is_full = 1;
+		first_fork = philo->right_fork;
+		second_fork = philo->left_fork;
 	}
+	pthread_mutex_lock(&first_fork->mutex);
+	print_msg(table, philo->id, "has taken a fork");
+	pthread_mutex_lock(&second_fork->mutex);
+	print_msg(table, philo->id, "has taken a fork");
+	return (first_fork->id);
 }
-
-// take forks and eat
 
 // check if philo died
 // implement watchdog - somebody died, all philos are full
 static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 {
-	pthread_mutex_lock(&philo->right_fork->mutex);
-	print_msg(table, philo->id, "has taken a fork");
-	pthread_mutex_lock(&philo->left_fork->mutex);
-	print_msg(table, philo->id, "has taken a fork");
+	int	first_taken_fork_id;
+
+	first_taken_fork_id = take_forks(table, philo);
 	print_msg(table, philo->id, "is eating");
+	pthread_mutex_lock(&philo->philo_mutex);
 	philo->last_meal_time = get_time();
-	usleep(table->time_to_eat);
+	precise_usleep(table->time_to_eat);
 	philo->meals_eaten++;
-	pthread_mutex_unlock(&philo->left_fork->mutex);
-	pthread_mutex_unlock(&philo->right_fork->mutex);
-	is_philo_full(table, philo);
+	pthread_mutex_unlock(&philo->philo_mutex);
+	put_forks_down(philo, first_taken_fork_id);
+	is_philo_full(table, philo); // maybe if he is full i need to end here
 	print_msg(table, philo->id, "is sleeping");
-	usleep(table->time_to_sleep); // use precise_usleep()
+	precise_usleep(table->time_to_sleep); // use precise_usleep()
 	print_msg(table, philo->id, "is thinking");
 }
 
