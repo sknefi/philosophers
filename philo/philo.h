@@ -87,15 +87,18 @@ int		init_table(int argc, char **argv, t_table *table);
 long	ft_atol(const char *str);
 long	get_time(void);
 void	print_msg(t_table *table, int philo_id, char *msg);
-void	clean_philos(t_table *table);
-void	clean_forks(t_table *table);
+void	free_philos(t_table *table);
+void	free_forks(t_table *table);
 void	clean_table(t_table *table);
 void	*ft_memset(void *b, int c, size_t len);
-void	start_dinner(t_table *table);
+int		start_dinner(t_table *table);
 void	precise_usleep(long time_in_micro);
 
 void	assign_forks(t_table *table);
 int		is_philo_full(t_table *table, t_philo *philo);
 void	*watchdog_routine(void *arg);
 t_dinner_args	*init_dinner_args(t_table *tabled);
+void	free_dinner_args(t_table *table, t_dinner_args *dinner_args);
+void	put_forks_down(t_philo *philo, int first_fork_id);
+void	*watchdog_routine(void *arg);
 #endif

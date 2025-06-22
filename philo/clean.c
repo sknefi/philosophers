@@ -1,6 +1,21 @@
 #include "philo.h"
 
-void	clean_philos(t_table *table)
+void	free_dinner_args(t_table *table, t_dinner_args *dinner_args)
+{
+	int	i;
+
+	if (!dinner_args)
+		return ;
+	i = 0;
+	while (i < table->no_philosophers)
+	{
+		free(&dinner_args[i]);
+		i++;
+	}
+	free(dinner_args);
+}
+
+void	free_philos(t_table *table)
 {
 	int		i;
 
@@ -12,7 +27,7 @@ void	clean_philos(t_table *table)
 	free(table->philos);
 }
 
-void	clean_forks(t_table *table)
+void	free_forks(t_table *table)
 {
 	int		i;
 
@@ -31,8 +46,8 @@ void	clean_table(t_table *table)
 {
 	if (!table)
 		return ;
-	clean_philos(table);
-	clean_forks(table);
+	free_philos(table);
+	free_forks(table);
 	pthread_mutex_destroy(&table->print_mutex);
 	pthread_mutex_destroy(&table->all_philos_full_mutex);
 	pthread_mutex_destroy(&table->death_mutex);

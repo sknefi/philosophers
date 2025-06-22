@@ -39,9 +39,8 @@ int main(int argc, char *argv[])
 		return (printf(R "Error: Failed to allocate memory\n" RES), EXIT_FAILURE);
 	if (init_table(argc, argv, table))
 		return (EXIT_FAILURE);
-
-	print_philos(table);
-	start_dinner(table);
+	if (start_dinner(table))
+		return (EXIT_FAILURE);
 	clean_table(table);
     return (EXIT_SUCCESS);
 }

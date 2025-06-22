@@ -43,17 +43,31 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 	print_msg(table, philo->id, "is thinking");
 }
 
+static int	is_simulation_over(t_table *table)
+{
+	int				death_flag;
+	int				all_philos_full_flag;
+
+	pthread_mutex_lock(&table->death_mutex);
+	death_flag = table->death_flag;
+	pthread_mutex_unlock(&table->death_mutex);
+	pthread_mutex_lock(&table->all_philos_full_mutex);
+	all_philos_full_flag = table->all_philos_full_flag;
+	pthread_mutex_unlock(&table->all_philos_full_mutex);
+	return (death_flag || all_philos_full_flag);
+}
+
 static void	*dinner_routine(void *arg)
 {
-	t_philo	*philo;
+	t_table			*table;
+	t_philo			*philo;
+	t_dinner_args	*dinner_args;
 
-	philo = (t_philo *)arg;
-	
-	// For now, let's just print the philosopher ID to test
-	printf("Philosopher %d is starting dinner\n", philo->id);
-	// while 1
-		// if death_flag or all_philos_full_flag (from watchdog)
-		// take_forks_eat_think_sleep()
+	dinner_args = (t_dinner_args *)arg;
+	table = dinner_args->table;
+	philo = dinner_args->philo;
+	while (!is_simulation_over(table))
+		take_forks_eat_think_sleep(table, philo);
 	return (NULL);
 }
 
@@ -70,7 +84,7 @@ int	start_dinner(t_table *table)
 	if (!dinner_args)
 		return (1);
 	assign_forks(table);
-	pthread_create(&table->watchdog_thread, NULL, &watchdog_routine, table);
+	// pthread_create(&table->watchdog_thread, NULL, &watchdog_routine, table);
 	i = 0;
 	while (i < table->no_philosophers)
 	{
@@ -83,6 +97,7 @@ int	start_dinner(t_table *table)
 		pthread_join(table->philos[i]->thread, NULL);
 		i++;
 	}
-	pthread_join(table->watchdog_thread, NULL);
+	// pthread_join(table->watchdog_thread, NULL);
+	free_dinner_args(table, dinner_args);
 	return (0);
 }
