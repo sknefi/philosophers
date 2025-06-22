@@ -44,7 +44,7 @@ typedef struct s_philo
 	long			last_meal_time;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
-	pthread_t		thread_id;
+	pthread_t		thread;
 	pthread_mutex_t	philo_mutex;
 }	t_philo;
 
@@ -68,10 +68,19 @@ typedef struct s_table
 	long			num_times_each_philosopher_must_eat;
 	t_fork			**forks;
 	t_philo			**philos;
+	pthread_t		watchdog_thread;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	all_philos_full_mutex;
 }	t_table;
+
+// used only to pass current philo from while loop and table to dinner routine as arguments in pthreads
+typedef struct s_dinner_args
+{
+	t_philo	*philo;
+	t_table	*table;
+}	t_dinner_args;
+
 
 // Function declarations
 int		init_table(int argc, char **argv, t_table *table);
@@ -87,5 +96,6 @@ void	precise_usleep(long time_in_micro);
 
 void	assign_forks(t_table *table);
 int		is_philo_full(t_table *table, t_philo *philo);
-
+void	*watchdog_routine(void *arg);
+t_dinner_args	*init_dinner_args(t_table *tabled);
 #endif

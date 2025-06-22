@@ -19,5 +19,9 @@ void	are_philos_alive(t_table *table)
 	int	i;
 
 	i = 0;
-	while
+}
+
+void	*watchdog_routine(void *arg)
+{
+
 }

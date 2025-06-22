@@ -75,3 +75,21 @@ int	init_table(int argc, char **argv, t_table *table)
 		return (1);
 	return (0);
 }
+
+t_dinner_args	*init_dinner_args(t_table *table)
+{
+	int				i;
+	t_dinner_args	*dinner_args;
+
+	dinner_args = (t_dinner_args *)malloc(sizeof(t_dinner_args) * table->no_philosophers);
+	if (!dinner_args)
+		return (NULL);
+	i = 0;
+	while (i < table->no_philosophers)
+	{
+		dinner_args[i].table = table;
+		dinner_args[i].philo = table->philos[i];
+		i++;
+	}
+	return (dinner_args);
+}

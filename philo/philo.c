@@ -23,7 +23,6 @@ static int	take_forks(t_table *table, t_philo *philo)
 	return (first_fork->id);
 }
 
-// check if philo died
 // implement watchdog - somebody died, all philos are full
 static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 {
@@ -37,9 +36,10 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->philo_mutex);
 	put_forks_down(philo, first_taken_fork_id);
-	is_philo_full(table, philo); // maybe if he is full i need to end here
+	if (is_philo_full(table, philo)) // maybe if he is full i need to end here
+		return ;
 	print_msg(table, philo->id, "is sleeping");
-	precise_usleep(table->time_to_sleep); // use precise_usleep()
+	precise_usleep(table->time_to_sleep);
 	print_msg(table, philo->id, "is thinking");
 }
 
@@ -57,22 +57,32 @@ static void	*dinner_routine(void *arg)
 	return (NULL);
 }
 
-void	start_dinner(t_table *table)
+/**
+ * 
+ * @return 0 - success, 1 - malloc failed in init_dinner_args
+ */
+int	start_dinner(t_table *table)
 {
-	int	i;
+	int				i;
+	t_dinner_args	*dinner_args;
 
+	dinner_args = init_dinner_args(table);
+	if (!dinner_args)
+		return (1);
 	assign_forks(table);
+	pthread_create(&table->watchdog_thread, NULL, &watchdog_routine, table);
 	i = 0;
-	// create pthread watchdog
 	while (i < table->no_philosophers)
 	{
-		pthread_create(&table->philos[i]->thread_id, NULL, &dinner_routine, table->philos[i]);
+		pthread_create(&table->philos[i]->thread, NULL, &dinner_routine, &dinner_args[i]);
 		i++;
 	}
 	i = 0;
 	while (i < table->no_philosophers)
 	{
-		pthread_join(table->philos[i]->thread_id, NULL);
+		pthread_join(table->philos[i]->thread, NULL);
 		i++;
 	}
+	pthread_join(table->watchdog_thread, NULL);
+	return (0);
 }
