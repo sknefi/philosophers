@@ -47,3 +47,12 @@ void	put_forks_down(t_philo *philo, int first_fork_id)
 		pthread_mutex_unlock(&philo->left_fork->mutex);
 	}
 }
+
+void	solo_dinner(t_table *table)
+{
+	t_philo	*philo;
+
+	philo = table->philos[0];
+	printf("0 %d has taken a fork\n", philo->id);
+	printf("%ld %d died\n", table->time_to_die / 1000, philo->id);
+}

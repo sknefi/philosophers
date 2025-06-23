@@ -102,4 +102,5 @@ t_dinner_args	*init_dinner_args(t_table *tabled);
 void	free_dinner_args(t_dinner_args *dinner_args);
 void	put_forks_down(t_philo *philo, int first_fork_id);
 void	*watchdog_routine(void *arg);
+void	solo_dinner(t_table *table);
 #endif

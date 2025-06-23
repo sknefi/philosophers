@@ -32,6 +32,9 @@ static int	are_all_philos_full(t_table *table)
 			return (0);
 		i++;
 	}
+	pthread_mutex_lock(&table->all_philos_full_mutex);
+	table->all_philos_full_flag = 1; 
+	pthread_mutex_unlock(&table->all_philos_full_mutex);
 	return (1);
 }
 
@@ -72,17 +75,7 @@ void	*watchdog_routine(void *arg)
 	t_table	*table;
 
 	table = (t_table *)arg;
-	while (1)
-	{
-		if (!are_all_philos_alive(table))
-			return (NULL);
-		if (are_all_philos_full(table))
-		{
-			pthread_mutex_lock(&table->all_philos_full_mutex);
-			table->all_philos_full_flag = 1; 
-			pthread_mutex_unlock(&table->all_philos_full_mutex);
-			return (NULL);	
-		}
+	while (are_all_philos_alive(table) && !are_all_philos_full(table))
 		precise_usleep(100);
-	}
+	return (NULL);
 }

@@ -84,6 +84,8 @@ int	start_dinner(t_table *table)
 	if (!dinner_args)
 		return (1);
 	assign_forks(table);
+	if (table->no_philosophers == 1)
+		return (solo_dinner(table), 0);
 	pthread_create(&table->watchdog_thread, NULL, &watchdog_routine, table);
 	i = 0;
 	while (i < table->no_philosophers)
