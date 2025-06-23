@@ -2,8 +2,8 @@
 
 static int	ft_isspace(int c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || 
-			c == '\v' || c == '\f' || c == '\r');
+	return (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r');
 }
 
 long	ft_atol(const char *str)
@@ -45,7 +45,7 @@ void	*ft_memset(void *b, int c, size_t len)
 void	precise_usleep(long time_in_micro)
 {
 	long	start;
-	
+
 	start = get_time();
 	while ((get_time() - start) < time_in_micro)
 		usleep(100);

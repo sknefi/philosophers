@@ -12,7 +12,7 @@ int	is_philo_full(t_table *table, t_philo *philo)
 		philo->is_full = 1;
 		res = 1;
 	}
-	pthread_mutex_unlock(&philo->philo_mutex);	
+	pthread_mutex_unlock(&philo->philo_mutex);
 	return (res);
 }
 
@@ -33,7 +33,7 @@ static int	are_all_philos_full(t_table *table)
 		i++;
 	}
 	pthread_mutex_lock(&table->all_philos_full_mutex);
-	table->all_philos_full_flag = 1; 
+	table->all_philos_full_flag = 1;
 	pthread_mutex_unlock(&table->all_philos_full_mutex);
 	return (1);
 }
@@ -52,8 +52,8 @@ static int	is_philo_alive(t_table *table, t_philo *philo)
 	pthread_mutex_lock(&philo->philo_mutex);
 	if ((get_time() - philo->last_meal_time) < table->time_to_die)
 		res = 1;
-	pthread_mutex_unlock(&philo->philo_mutex);	
-	return (res);	
+	pthread_mutex_unlock(&philo->philo_mutex);
+	return (res);
 }
 
 /**
@@ -71,7 +71,7 @@ static int	are_all_philos_alive(t_table *table)
 		if (!is_philo_alive(table, table->philos[i]))
 		{
 			pthread_mutex_lock(&table->death_mutex);
-			table->death_flag = 1; 
+			table->death_flag = 1;
 			pthread_mutex_unlock(&table->death_mutex);
 			print_msg(table, table->philos[i]->id, MSG_DIED);
 			return (0);

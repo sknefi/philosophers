@@ -29,7 +29,8 @@ void	assign_forks(t_table *table)
 	while (i < table->no_philosophers)
 	{
 		table->philos[i]->left_fork = table->forks[i];
-		table->philos[i]->right_fork = table->forks[(i + 1) % table->no_philosophers];
+		table->philos[i]->right_fork = table->forks[(i + 1)
+			% table->no_philosophers];
 		i++;
 	}
 }
@@ -43,7 +44,7 @@ void	put_forks_down(t_philo *philo, int first_fork_id)
 	}
 	else
 	{
-		pthread_mutex_unlock(&philo->right_fork->mutex);	
+		pthread_mutex_unlock(&philo->right_fork->mutex);
 		pthread_mutex_unlock(&philo->left_fork->mutex);
 	}
 }

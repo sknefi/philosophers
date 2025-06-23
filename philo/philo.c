@@ -1,6 +1,5 @@
 #include "philo.h"
 
-// return the id of a first fork so when putting them down i put the first one down first
 /**
  * @brief Philo takes 2 forks, one to each hand
  * @return the id of the first fork taken 
@@ -55,7 +54,8 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 	// 	precise_usleep(10000);
 	if (table->time_to_eat < table->time_to_die - table->time_to_sleep)
 	{
-		thinking_time = (table->time_to_die - table->time_to_eat - table->time_to_sleep) / 2;
+		thinking_time = (table->time_to_die - table->time_to_eat
+				- table->time_to_sleep) / 2;
 		if (thinking_time > 50000)
 			thinking_time = 50000;
 		if (thinking_time > 0)
@@ -102,7 +102,6 @@ static void	*dinner_routine(void *arg)
 	return (NULL);
 }
 
-
 int	start_dinner(t_table *table)
 {
 	int				i;
@@ -118,7 +117,8 @@ int	start_dinner(t_table *table)
 	i = 0;
 	while (i < table->no_philosophers)
 	{
-		pthread_create(&table->philos[i]->thread, NULL, &dinner_routine, &dinner_args[i]);
+		pthread_create(&table->philos[i]->thread, NULL, &dinner_routine,
+			&dinner_args[i]);
 		i++;
 	}
 	i = 0;
@@ -128,6 +128,5 @@ int	start_dinner(t_table *table)
 		i++;
 	}
 	pthread_join(table->watchdog_thread, NULL);
-	free_dinner_args(dinner_args);
-	return (0);
+	return (free_dinner_args(dinner_args), 0);
 }

@@ -36,7 +36,8 @@ static int	init_philos(t_table *table)
 {
 	int	i;
 
-	table->philos = (t_philo **)malloc(sizeof(t_philo *) * table->no_philosophers);
+	table->philos = (t_philo **)malloc(sizeof(t_philo *)
+			* table->no_philosophers);
 	if (!table->philos)
 		return (1);
 	i = 0;
@@ -106,7 +107,8 @@ t_dinner_args	*init_dinner_args(t_table *table)
 	int				i;
 	t_dinner_args	*dinner_args;
 
-	dinner_args = (t_dinner_args *)malloc(sizeof(t_dinner_args) * table->no_philosophers);
+	dinner_args = (t_dinner_args *)malloc(sizeof(t_dinner_args)
+			* table->no_philosophers);
 	if (!dinner_args)
 		return (NULL);
 	i = 0;
