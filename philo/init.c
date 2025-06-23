@@ -3,6 +3,8 @@
 static int	init_args(int argc, char **argv, t_table *table)
 {
 	table->no_philosophers = ft_atol(argv[1]);
+	if (table->no_philosophers <= 0)
+		return (1);
 	table->time_to_die = ft_atol(argv[2]) * 1000;
 	table->time_to_eat = ft_atol(argv[3]) * 1000;
 	table->time_to_sleep = ft_atol(argv[4]) * 1000;
@@ -67,7 +69,7 @@ int	init_table(int argc, char **argv, t_table *table)
 	table->start_time = get_time();
 	table->all_philos_full_flag = 0;
 	if (init_args(argc, argv, table))
-		return (printf(R "Error: Invalid input\n" RES), 1);
+		return (printf(ERR_IN), 1);
 	if (pthread_mutex_init(&table->print_mutex, NULL) != 0)
 		return (1);
 	if (pthread_mutex_init(&table->all_philos_full_mutex, NULL) != 0)

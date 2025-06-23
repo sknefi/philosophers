@@ -15,14 +15,14 @@ int main(int argc, char *argv[])
 	t_table	*table;
 
 	if (argc != 5 && argc != 6)
-		return (printf(R "Error: Invalid number of arguments\n" RES), EXIT_FAILURE);
+		return (printf(ERR_ARG), EXIT_FAILURE);
 	table = (t_table *)malloc(sizeof(t_table));
 	if (!table)
-		return (printf(R "Error: Failed to allocate memory\n" RES), EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	if (init_table(argc, argv, table))
 		return (EXIT_FAILURE);
 	if (parser(table))
-		return (printf(R "Error: Invalid input\n" RES), EXIT_FAILURE);
+		return (printf(ERR_IN), EXIT_FAILURE);
 	if (start_dinner(table))
 		return (EXIT_FAILURE);
 	clean_table(table);

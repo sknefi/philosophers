@@ -10,10 +10,21 @@
 #include <string.h>
 
 # define R "\033[31m"
-# define G "\033[32m"
 # define Y "\033[33m"
+# define G "\033[32m"
 # define B "\033[34m"
+# define O "\033[38;5;208m"
 # define RES "\033[0m"
+
+# define MSG_EAT  G "is eating" RES
+# define MSG_SLEEP Y "is sleeping" RES
+# define MSG_THINK O "is thinking" RES
+# define MSG_FORK B "has taken a fork" RES
+# define MSG_DIED R "died" RES
+
+# define ERR_IN R "Error: Invalid input\n" RES
+# define ERR_ARG R "Error: Invalid number of arguments\n" RES
+# define ERR_GEN R "Error: General error (malloc, mutex, etc.)\n" RES
 
 /**
  * fork of a philosopher

@@ -17,9 +17,9 @@ static int	take_forks(t_table *table, t_philo *philo)
 		second_fork = philo->left_fork;
 	}
 	pthread_mutex_lock(&first_fork->mutex);
-	print_msg(table, philo->id, "has taken a fork");
+	print_msg(table, philo->id, MSG_FORK);
 	pthread_mutex_lock(&second_fork->mutex);
-	print_msg(table, philo->id, "has taken a fork");
+	print_msg(table, philo->id, MSG_FORK);
 	return (first_fork->id);
 }
 
@@ -29,7 +29,7 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 	int	first_taken_fork_id;
 
 	first_taken_fork_id = take_forks(table, philo);
-	print_msg(table, philo->id, "is eating");
+	print_msg(table, philo->id, MSG_EAT);
 	pthread_mutex_lock(&philo->philo_mutex);
 	philo->last_meal_time = get_time();
 	precise_usleep(table->time_to_eat);
@@ -38,9 +38,9 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 	put_forks_down(philo, first_taken_fork_id);
 	if (is_philo_full(table, philo)) // maybe if he is full i need to end here
 		return ;
-	print_msg(table, philo->id, "is sleeping");
+	print_msg(table, philo->id, MSG_SLEEP);
 	precise_usleep(table->time_to_sleep);
-	print_msg(table, philo->id, "is thinking");
+	print_msg(table, philo->id, MSG_THINK);
 }
 
 static int	is_simulation_over(t_table *table)

@@ -62,7 +62,7 @@ static int	are_all_philos_alive(t_table *table)
 			pthread_mutex_lock(&table->death_mutex);
 			table->death_flag = 1; 
 			pthread_mutex_unlock(&table->death_mutex);
-			print_msg(table, table->philos[i]->id, "died");
+			print_msg(table, table->philos[i]->id, MSG_DIED);
 			return (0);
 		}
 		i++;

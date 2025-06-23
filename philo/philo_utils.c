@@ -10,7 +10,7 @@ void	print_msg(t_table *table, int philo_id, char *msg)
 	pthread_mutex_lock(&table->death_mutex);
 	death_flag = table->death_flag;
 	pthread_mutex_unlock(&table->death_mutex);
-	if (death_flag && strcmp(msg, "died") != 0)
+	if (death_flag && strcmp(msg, MSG_DIED) != 0)
 	{
 		pthread_mutex_unlock(&table->print_mutex);
 		return ;
@@ -53,6 +53,6 @@ void	solo_dinner(t_table *table)
 	t_philo	*philo;
 
 	philo = table->philos[0];
-	printf("0 %d has taken a fork\n", philo->id);
-	printf("%ld %d died\n", table->time_to_die / 1000, philo->id);
+	printf("0 %d %s\n", philo->id, MSG_FORK);
+	printf("%ld %d %s\n", table->time_to_die / 1000, philo->id, MSG_DIED);
 }
