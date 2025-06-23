@@ -2,10 +2,19 @@
 
 void	print_msg(t_table *table, int philo_id, char *msg)
 {
+	int		death_flag;
 	long	timestamp;
 	long	current_time;
 
 	pthread_mutex_lock(&table->print_mutex);
+	pthread_mutex_lock(&table->death_mutex);
+	death_flag = table->death_flag;
+	pthread_mutex_unlock(&table->death_mutex);
+	if (death_flag && strcmp(msg, "died") != 0)
+	{
+		pthread_mutex_unlock(&table->print_mutex);
+		return ;
+	}
 	current_time = get_time();
 	timestamp = (current_time - table->start_time) / 1000;
 	printf("%ld %d %s\n", timestamp, philo_id, msg);

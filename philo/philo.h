@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <sys/time.h>
+#include <string.h>
 
 # define R "\033[31m"
 # define G "\033[32m"

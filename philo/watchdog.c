@@ -56,6 +56,9 @@ static int	are_all_philos_alive(t_table *table)
 	{
 		if (!is_philo_alive(table, table->philos[i]))
 		{
+			pthread_mutex_lock(&table->death_mutex);
+			table->death_flag = 1; 
+			pthread_mutex_unlock(&table->death_mutex);
 			print_msg(table, table->philos[i]->id, "died");
 			return (0);
 		}
@@ -72,12 +75,7 @@ void	*watchdog_routine(void *arg)
 	while (1)
 	{
 		if (!are_all_philos_alive(table))
-		{
-			pthread_mutex_lock(&table->death_mutex);
-			table->death_flag = 1; 
-			pthread_mutex_unlock(&table->death_mutex);
 			return (NULL);
-		}
 		if (are_all_philos_full(table))
 		{
 			pthread_mutex_lock(&table->all_philos_full_mutex);
