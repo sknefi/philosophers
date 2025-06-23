@@ -26,7 +26,8 @@ static int	take_forks(t_table *table, t_philo *philo)
 // implement watchdog - somebody died, all philos are full
 static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 {
-	int	first_taken_fork_id;
+	int		first_taken_fork_id;
+	long	thinking_time;
 
 	first_taken_fork_id = take_forks(table, philo);
 	print_msg(table, philo->id, MSG_EAT);
@@ -41,6 +42,14 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 	print_msg(table, philo->id, MSG_SLEEP);
 	precise_usleep(table->time_to_sleep);
 	print_msg(table, philo->id, MSG_THINK);
+	if (table->time_to_eat < table->time_to_die - table->time_to_sleep)
+	{
+		thinking_time = (table->time_to_die - table->time_to_eat - table->time_to_sleep) / 2;
+		if (thinking_time > 50000)
+			thinking_time = 50000;
+		if (thinking_time > 0)
+			precise_usleep(thinking_time);
+	}
 }
 
 static int	is_simulation_over(t_table *table)
