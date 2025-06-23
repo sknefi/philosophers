@@ -1,6 +1,11 @@
 #include "philo.h"
 
 // return the id of a first fork so when putting them down i put the first one down first
+/**
+ * @brief Philo takes 2 forks, one to each hand
+ * @return the id of the first fork taken 
+ * (so when putting them down he puts the first one down the first picked up)
+ */
 static int	take_forks(t_table *table, t_philo *philo)
 {
 	t_fork	*first_fork;
@@ -23,7 +28,11 @@ static int	take_forks(t_table *table, t_philo *philo)
 	return (first_fork->id);
 }
 
-// implement watchdog - somebody died, all philos are full
+/**
+ * @brief Philo takes 2 forks, eats, sleeps, thinks
+ * @param table table to use
+ * @param philo current philo in iteration
+ */
 static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 {
 	int		first_taken_fork_id;
@@ -42,6 +51,8 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 	print_msg(table, philo->id, MSG_SLEEP);
 	precise_usleep(table->time_to_sleep);
 	print_msg(table, philo->id, MSG_THINK);
+	// if (table->no_philosophers % 2 == 0)
+	// 	precise_usleep(10000);
 	if (table->time_to_eat < table->time_to_die - table->time_to_sleep)
 	{
 		thinking_time = (table->time_to_die - table->time_to_eat - table->time_to_sleep) / 2;
@@ -52,6 +63,12 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 	}
 }
 
+/**
+ * @brief Check if the simulation is over (somebody died or all philos are full)
+ * that means that one of the flags is set to 1
+ * @param table table to use
+ * @return 1 if the simulation is over, 0 if it should continue
+ */
 static int	is_simulation_over(t_table *table)
 {
 	int				death_flag;
@@ -66,6 +83,11 @@ static int	is_simulation_over(t_table *table)
 	return (death_flag || all_philos_full_flag);
 }
 
+/**
+ * @brief Dinner routine for a philosopher used in thread as a thread function
+ * @param arg pointer to the dinner arguments (struct with table and philo)
+ * @return NULL, no need of return value
+ */
 static void	*dinner_routine(void *arg)
 {
 	t_table			*table;
@@ -80,10 +102,7 @@ static void	*dinner_routine(void *arg)
 	return (NULL);
 }
 
-/**
- * 
- * @return 0 - success, 1 - malloc failed in init_dinner_args
- */
+
 int	start_dinner(t_table *table)
 {
 	int				i;

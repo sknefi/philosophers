@@ -1,10 +1,5 @@
 #include "philo.h"
 
-/**
- * the last parameter of input was not set -> 0
- * the last parameter of input was set and philo is not full -> 0
- * the last parameter of input was set and philo is full -> 1
-*/
 int	is_philo_full(t_table *table, t_philo *philo)
 {
 	int	res;
@@ -21,6 +16,11 @@ int	is_philo_full(t_table *table, t_philo *philo)
 	return (res);
 }
 
+/**
+ * @brief Check if all the philosophers are full
+ * @param table table of the simulation
+ * @return 1 if all the philosophers are full, 0 if at least one is not full
+ */
 static int	are_all_philos_full(t_table *table)
 {
 	int	i;
@@ -38,6 +38,12 @@ static int	are_all_philos_full(t_table *table)
 	return (1);
 }
 
+/**
+ * @brief Check if the philo is alive
+ * @param table table of the simulation
+ * @param philo philo to check
+ * @return 1 if the philo is alive, 0 if the philo is dead
+ */
 static int	is_philo_alive(t_table *table, t_philo *philo)
 {
 	int	res;
@@ -50,6 +56,11 @@ static int	is_philo_alive(t_table *table, t_philo *philo)
 	return (res);	
 }
 
+/**
+ * @brief Check if all the philosophers are alive
+ * @param table table of the simulation
+ * @return 1 if all the philosophers are alive, 0 if at least one is dead
+ */
 static int	are_all_philos_alive(t_table *table)
 {
 	int	i;

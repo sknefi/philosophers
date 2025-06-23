@@ -9,6 +9,9 @@
 #include <sys/time.h>
 #include <string.h>
 
+// philo -> philosopher
+
+// colors for the messages
 # define R "\033[31m"
 # define Y "\033[33m"
 # define G "\033[32m"
@@ -16,12 +19,14 @@
 # define O "\033[38;5;208m"
 # define RES "\033[0m"
 
+// messages for the print_msg function
 # define MSG_EAT  G "is eating" RES
 # define MSG_SLEEP Y "is sleeping" RES
 # define MSG_THINK O "is thinking" RES
 # define MSG_FORK B "has taken a fork" RES
 # define MSG_DIED R "died" RES
 
+// error messages
 # define ERR_IN R "Error: Invalid input\n" RES
 # define ERR_ARG R "Error: Invalid number of arguments\n" RES
 # define ERR_GEN R "Error: General error (malloc, mutex, etc.)\n" RES
@@ -66,7 +71,9 @@ typedef struct s_philo
 	forks contains all the information about the forks,
 	print_mutex is used to print messages (so no 2 threads write in the same time),
 	death_mutex is used to check if a philosopher is dead (death_flag),
-	all_philos_full_mutex is used to check if the simulation is over (all_philos_full_flag)
+	all_philos_full_mutex is used to check if the simulation is over (all_philos_full_flag),
+	watchdog_thread is the thread of the "waiter" that is checking if the simulation is over
+	(his thread is running in the same time as the philosophers threads)
 */
 typedef struct s_table
 {
@@ -93,25 +100,133 @@ typedef struct s_dinner_args
 	t_table	*table;
 }	t_dinner_args;
 
-
-// Function declarations
-int		init_table(int argc, char **argv, t_table *table);
+/**
+ * @brief Convert a string to a long integer
+ * @param str string to convert
+ * @return long integer
+ */
 long	ft_atol(const char *str);
-long	get_time(void);
-void	print_msg(t_table *table, int philo_id, char *msg);
-void	free_philos(t_table *table);
-void	free_forks(t_table *table);
-void	clean_table(t_table *table);
+
+/**
+ * @brief Set memory to a value
+ * (I used this function to write 0 to the whole structs - default init)
+ * @param b pointer to the memory to set
+ * @param c value to set
+ * @param len length of the memory to set
+ * @return pointer to the memory where the value was set
+ */
 void	*ft_memset(void *b, int c, size_t len);
-int		start_dinner(t_table *table);
+
+/**
+ * @brief Get time in microseconds
+ * @return time in microseconds
+ */
+long	get_time(void);
+
+/**
+ * @brief Precise usleep, so the program sleeps for the exact time 
+ * (for better precision)
+ * @param time_in_micro time in microseconds
+ */
 void	precise_usleep(long time_in_micro);
 
-void	assign_forks(t_table *table);
-int		is_philo_full(t_table *table, t_philo *philo);
-void	*watchdog_routine(void *arg);
+/**
+ * @brief Initialize the table
+ * @param argc number of arguments
+ * @param argv arguments
+ * @param table table to initialize
+ * @return 0 if OK, 1 if malloc/mutex error
+ */
+int		init_table(int argc, char **argv, t_table *table);
+
+/**
+ * @brief Initialize the dinner arguments
+ * for table and current philo in iteration so I can pass them to the dinner routine
+ * @param table table to initialize
+ * @return pointer to the dinner arguments
+ */
 t_dinner_args	*init_dinner_args(t_table *tabled);
-void	free_dinner_args(t_dinner_args *dinner_args);
+
+/**
+ * @brief Start the dinner - assign forks, initialize the threads and the watchdog threads
+ * then start their routines
+ * @param table table to use
+ * @return 0 - success, 1 - malloc failed in init_dinner_args
+ */
+int		start_dinner(t_table *table);
+
+/**
+ * @brief Print a message if the simulation is not over
+ * if I pass the MSG_DIED message, it will print it even if the simulation is over
+ * because of subject requirements (if philo dies the message must be printed)
+ * @param table table of the simulation
+ * @param philo_id id of the philo
+ * @param msg message to print defined in header file (philo.h)
+ */
+void	print_msg(t_table *table, int philo_id, char *msg);
+
+/**
+ * @brief Assign the forks to each philosopher
+ * @param table table of the simulation
+ */
+void	assign_forks(t_table *table);
+
+/**
+ * @brief Put the forks down, when philo is done eating
+ * @param philo philo to use
+ * @param first_fork_id id of the first fork taken
+ */
 void	put_forks_down(t_philo *philo, int first_fork_id);
-void	*watchdog_routine(void *arg);
+
+/**
+ * @brief Print the message for the dinner when there is only one philo
+ * @param table table of the simulation
+ */
 void	solo_dinner(t_table *table);
+
+/**
+ * @brief Routine of the watchdog thread, checks if the simulation is over
+ * (if all the philosophers are alive and not full, else it will set the
+ * either death_flag or all_philos_full_flag to 1)
+ * @param arg pointer to the table
+ * @return NULL
+ */
+void	*watchdog_routine(void *arg);
+
+/**
+ * @brief Check if the philo is full
+ * @param table table of the simulation
+ * @param philo philo to check
+ * @return 
+ * the last parameter of input was not set -> 0
+ * the last parameter of input was set and philo is not full -> 0
+ * the last parameter of input was set and philo is full -> 1
+*/
+int		is_philo_full(t_table *table, t_philo *philo);
+
+/**
+ * @brief Free the philosophers - destroy the mutexes and free the philosophers
+ * @param table table of the simulation
+*/
+void	free_philos(t_table *table);
+
+/**
+ * @brief Free the forks - destroy the mutexes and free the forks
+ * @param table table of the simulation
+*/
+void	free_forks(t_table *table);
+
+/**
+ * @brief Clean the table - clean the whole program
+ * (philos, forks, mutexes, ...)
+ * @param table table of the simulation
+*/
+void	clean_table(t_table *table);
+
+/**
+ * @brief Free the dinner arguments after the simulation is over
+ * @param dinner_args pointer to the dinner arguments
+*/
+void	free_dinner_args(t_dinner_args *dinner_args);
+
 #endif

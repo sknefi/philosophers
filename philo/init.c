@@ -1,10 +1,15 @@
 #include "philo.h"
 
+/**
+ * @brief Initialize the arguments of the table from input
+ * @param argc number of arguments
+ * @param argv arguments
+ * @param table table to initialize
+ * @return 0 if all params are valid, 1 if there is some negative value
+ */
 static int	init_args(int argc, char **argv, t_table *table)
 {
 	table->no_philosophers = ft_atol(argv[1]);
-	if (table->no_philosophers <= 0)
-		return (1);
 	table->time_to_die = ft_atol(argv[2]) * 1000;
 	table->time_to_eat = ft_atol(argv[3]) * 1000;
 	table->time_to_sleep = ft_atol(argv[4]) * 1000;
@@ -16,9 +21,17 @@ static int	init_args(int argc, char **argv, t_table *table)
 	}
 	else
 		table->num_times_each_philosopher_must_eat = -1;
-	return (0);
+	return (table->no_philosophers <= 0
+		|| table->time_to_die <= 0
+		|| table->time_to_eat <= 0
+		|| table->time_to_sleep <= 0);
 }
 
+/**
+ * @brief Initialize the philosophers of the table
+ * @param table table to initialize
+ * @return 0 if OK, 1 if malloc/mutex error
+ */
 static int	init_philos(t_table *table)
 {
 	int	i;
@@ -42,6 +55,11 @@ static int	init_philos(t_table *table)
 	return (0);
 }
 
+/**
+ * @brief Initialize the forks of the table
+ * @param table table to initialize
+ * @return 0 if OK, 1 if malloc/mutex error
+ */
 static int	init_forks(t_table *table)
 {
 	int	i;
