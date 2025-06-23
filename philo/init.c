@@ -27,6 +27,7 @@ static int	init_philos(t_table *table)
 			return (1);
 		ft_memset(table->philos[i], 0, sizeof(t_philo));
 		table->philos[i]->id = i + 1;
+		table->philos[i]->last_meal_time = get_time();
 		if (pthread_mutex_init(&table->philos[i]->philo_mutex, NULL) != 0)
 			return (1);
 		i++;

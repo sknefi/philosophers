@@ -98,7 +98,7 @@ void	assign_forks(t_table *table);
 int		is_philo_full(t_table *table, t_philo *philo);
 void	*watchdog_routine(void *arg);
 t_dinner_args	*init_dinner_args(t_table *tabled);
-void	free_dinner_args(t_table *table, t_dinner_args *dinner_args);
+void	free_dinner_args(t_dinner_args *dinner_args);
 void	put_forks_down(t_philo *philo, int first_fork_id);
 void	*watchdog_routine(void *arg);
 #endif
