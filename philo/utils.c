@@ -1,11 +1,5 @@
 #include "philo.h"
 
-static int	ft_isspace(int c)
-{
-	return (c == ' ' || c == '\t' || c == '\n'
-		|| c == '\v' || c == '\f' || c == '\r');
-}
-
 long	ft_atol(const char *str)
 {
 	int			sign;
@@ -13,7 +7,8 @@ long	ft_atol(const char *str)
 
 	nb = 0;
 	sign = 1;
-	while (ft_isspace((int)*str))
+	while (*str == ' ' || *str == '\t' || *str == '\n'
+		|| *str == '\v' || *str == '\f' || *str == '\r')
 		str++;
 	if (*str == '+' || *str == '-')
 	{
