@@ -19,19 +19,19 @@
 # define O "\033[38;5;208m"
 # define RES "\033[0m"
 
-// messages for the print_msg function
-# define MSG_EAT  "is eating"
-# define MSG_SLEEP "is sleeping"
-# define MSG_THINK "is thinking"
-# define MSG_FORK "has taken a fork"
-# define MSG_DIED "died"
+// // messages for the print_msg function
+// # define MSG_EAT  "is eating"
+// # define MSG_SLEEP "is sleeping"
+// # define MSG_THINK "is thinking"
+// # define MSG_FORK "has taken a fork"
+// # define MSG_DIED "died"
 
-// error messages
-# define ERR_IN "Error: Invalid input\n"
-# define ERR_ARG "Error: Invalid number of arguments\n"
-# define ERR_GEN "Error: General error (malloc, mutex, etc.)\n"
+// // error messages
+// # define ERR_IN "Error: Invalid input\n"
+// # define ERR_ARG "Error: Invalid number of arguments\n"
+// # define ERR_GEN "Error: General error (malloc, mutex, etc.)\n"
 
-/* I love norminette
+// /* I love norminette
 # define MSG_EAT  G "is eating" RES
 # define MSG_SLEEP Y "is sleeping" RES
 # define MSG_THINK O "is thinking" RES
@@ -40,7 +40,6 @@
 # define ERR_IN R "Error: Invalid input\n" RES
 # define ERR_ARG R "Error: Invalid number of arguments\n" RES
 # define ERR_GEN R "Error: General error (malloc, mutex, etc.)\n" RES
-*/
 
 /**
  * fork of a philosopher
@@ -248,5 +247,13 @@ void			clean_table(t_table *table);
  * @param dinner_args pointer to the dinner arguments
 */
 void			free_dinner_args(t_dinner_args *dinner_args);
+
+/**
+ * @brief Compares if the strings are equal
+ * @param s1 string1
+ * @param s2 string2
+ * @return 0 if yes, 1 if not
+ */
+int	ft_strcmp(const char *s1, const char *s2);
 
 #endif

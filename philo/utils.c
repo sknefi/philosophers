@@ -58,3 +58,17 @@ long	get_time(void)
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000000) + tv.tv_usec);
 }
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i])
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	return (s1[i] - s2[i]);
+}

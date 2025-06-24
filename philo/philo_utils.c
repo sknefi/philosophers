@@ -10,7 +10,7 @@ void	print_msg(t_table *table, int philo_id, char *msg)
 	pthread_mutex_lock(&table->death_mutex);
 	death_flag = table->death_flag;
 	pthread_mutex_unlock(&table->death_mutex);
-	if (death_flag && strcmp(msg, MSG_DIED) != 0)
+	if (death_flag && ft_strcmp(msg, MSG_DIED) != 0)
 	{
 		pthread_mutex_unlock(&table->print_mutex);
 		return ;
