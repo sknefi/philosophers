@@ -46,13 +46,25 @@ static int	are_all_philos_full(t_table *table)
  */
 static int	is_philo_alive(t_table *table, t_philo *philo)
 {
-	int	res;
+	int		res;
+	long	time_since_last_meal;
+	long	time_since_start;
 
 	res = 0;
 	pthread_mutex_lock(&philo->philo_mutex);
-	if ((get_time() - philo->last_meal_time) < table->time_to_die)
-		res = 1;
+	time_since_last_meal = get_time() - philo->last_meal_time;
 	pthread_mutex_unlock(&philo->philo_mutex);
+	if (philo->meals_eaten == 0)
+	{
+		time_since_start = get_time() - table->start_time;
+		if (time_since_start < table->time_to_die)
+			res = 1;
+	}
+	else
+	{
+		if (time_since_last_meal < table->time_to_die)
+			res = 1;
+	}
 	return (res);
 }
 
@@ -87,6 +99,6 @@ void	*watchdog_routine(void *arg)
 
 	table = (t_table *)arg;
 	while (are_all_philos_alive(table) && !are_all_philos_full(table))
-		precise_usleep(100);
+		precise_usleep(1);
 	return (NULL);
 }

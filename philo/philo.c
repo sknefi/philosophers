@@ -38,10 +38,12 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 	long	thinking_time;
 
 	first_taken_fork_id = take_forks(table, philo);
-	print_msg(table, philo->id, MSG_EAT);
 	pthread_mutex_lock(&philo->philo_mutex);
 	philo->last_meal_time = get_time();
+	pthread_mutex_unlock(&philo->philo_mutex);
+	print_msg(table, philo->id, MSG_EAT);
 	precise_usleep(table->time_to_eat);
+	pthread_mutex_lock(&philo->philo_mutex);
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->philo_mutex);
 	put_forks_down(philo, first_taken_fork_id);
