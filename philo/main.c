@@ -10,9 +10,9 @@ int	main(int argc, char *argv[])
 	if (!table)
 		return (EXIT_FAILURE);
 	if (init_table(argc, argv, table))
-		return (EXIT_FAILURE);
+		return (clean_table(table), EXIT_FAILURE);
 	if (start_dinner(table))
-		return (EXIT_FAILURE);
+		return (clean_table(table), EXIT_FAILURE);
 	clean_table(table);
 	return (EXIT_SUCCESS);
 }
