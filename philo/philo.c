@@ -52,8 +52,6 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 	print_msg(table, philo->id, MSG_SLEEP);
 	precise_usleep(table->time_to_sleep);
 	print_msg(table, philo->id, MSG_THINK);
-	// if (table->no_philosophers % 2 == 0)
-	// 	precise_usleep(10000);
 	if (table->time_to_eat < table->time_to_die - table->time_to_sleep)
 	{
 		thinking_time = (table->time_to_die - table->time_to_eat
