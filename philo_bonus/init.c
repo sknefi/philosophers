@@ -27,25 +27,48 @@ static int	init_args(int argc, char **argv, t_table *table)
 		|| table->time_to_sleep <= 0);
 }
 
-static t_sems	*init_sems(t_table *table)
+static int	init_sems(t_table *table)
 {
 	t_sems	*sems;
 
 	sems = (t_sems *)malloc(sizeof(t_sems));
 	if (!sems)
-		return (NULL);
+		return (1);
+	sem_unlink(SEM_FORKS);
+	sem_unlink(SEM_PRINT);
+	sem_unlink(SEM_DEATH);
+	sem_unlink(SEM_ALL_PHILOS_FULL);
 	sems->forks = sem_open(SEM_FORKS, O_CREAT, 0644, table->no_philosophers);
 	sems->print_sem = sem_open(SEM_PRINT, O_CREAT, 0644, 1);
 	sems->death_sem = sem_open(SEM_DEATH, O_CREAT, 0644, 1);
 	sems->all_philos_full_sem = sem_open(SEM_ALL_PHILOS_FULL, O_CREAT, 0644, 1);
-	if (sems->forks == SEM_FAILED || sems->print_sem == SEM_FAILED
-		|| sems->death_sem == SEM_FAILED
-		|| sems->all_philos_full_sem == SEM_FAILED)
+	if (sems->forks == SEM_FAILED || sems->all_philos_full_sem == SEM_FAILED
+		|| sems->print_sem == SEM_FAILED
+		|| sems->death_sem == SEM_FAILED)
+		return (1);
+	table->sems = sems;
+	return (0);
+}
+static int	init_philos(t_table *table)
+{
+	int		i;
+	t_philo	*philos;
+
+	philos = (t_philo *)malloc(sizeof(t_philo) * table->no_philosophers);
+	if (!philos)
+		return (1);
+	i = 0;
+	while (i < table->no_philosophers)
 	{
-		free(sems);
-		return (NULL);
+		philos[i].id = i + 1;
+		philos[i].is_full = 0;
+		philos[i].meals_eaten = 0;
+		philos[i].last_meal_time = get_time();
+		philos[i].pid = PID_NOT_INIT;
+		i++;
 	}
-	return (sems);
+	table->philos = philos;
+	return (0);
 }
 
 int	init_table(int argc, char **argv, t_table *table)
@@ -55,10 +78,9 @@ int	init_table(int argc, char **argv, t_table *table)
 	table->all_philos_full_flag = 0;
 	if (init_args(argc, argv, table))
 		return (printf(ERR_IN), 1);
-
 	if (init_philos(table))
 		return (1);
-	if (init_forks(table))
+	if (init_sems(table))
 		return (1);
 	return (0);
 }

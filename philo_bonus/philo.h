@@ -9,6 +9,7 @@
 # include <sys/time.h>
 # include <string.h>
 # include <semaphore.h>
+# include <fcntl.h>
 
 // philo -> philosopher
 
@@ -47,6 +48,7 @@
 # define SEM_DEATH "/sem_death"
 # define SEM_ALL_PHILOS_FULL "/sem_all_philos_full"
 
+# define PID_NOT_INIT -2
 typedef struct s_philo
 {
 	int		id;
@@ -80,5 +82,13 @@ typedef struct s_table
 	int		death_flag;      // Optional: might be tracked via sem
 	int		all_philos_full_flag;
 }	t_table;
+
+long	get_time(void);
+long	ft_atol(const char *str);
+void	precise_usleep(long time_in_micro);
+int		ft_strcmp(const char *s1, const char *s2);
+int		init_table(int argc, char **argv, t_table *table);
+int		start_dinner(t_table *table);
+void	clean_table(t_table *table);
 
 #endif

@@ -8,6 +8,9 @@ OBJDIR = obj
 
 SRCS = 	main.c \
 		init.c \
+		philo.c \
+		utils.c \
+		clean.c
 
 OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 
