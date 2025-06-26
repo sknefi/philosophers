@@ -51,9 +51,6 @@ void	put_forks_down(t_philo *philo, int first_fork_id)
 
 void	solo_dinner(t_table *table)
 {
-	t_philo	*philo;
-
-	philo = table->philos[0];
-	printf("0 %d %s\n", philo->id, MSG_FORK);
-	printf("%ld %d %s\n", table->time_to_die / 1000, philo->id, MSG_DIED);
+	print_msg(table, 1, MSG_FORK);
+	printf("%ld %d %s\n", table->time_to_die / 1000, 1, MSG_DIED);
 }
