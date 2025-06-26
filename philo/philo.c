@@ -71,8 +71,8 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
  */
 static int	is_simulation_over(t_table *table)
 {
-	int				death_flag;
-	int				all_philos_full_flag;
+	int	death_flag;
+	int	all_philos_full_flag;
 
 	pthread_mutex_lock(&table->death_mutex);
 	death_flag = table->death_flag;
