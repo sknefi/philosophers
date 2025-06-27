@@ -48,16 +48,19 @@ static int	is_philo_alive(t_table *table, t_philo *philo)
 {
 	long	time_since_last_meal;
 	long	time_since_start;
+	long	meals_eaten;
 
-	if (philo->meals_eaten == 0)
+	pthread_mutex_lock(&philo->philo_mutex);
+	meals_eaten = philo->meals_eaten;
+	if (meals_eaten == 0)
 	{
+		pthread_mutex_unlock(&philo->philo_mutex);
 		time_since_start = get_time() - table->start_time;
 		if (time_since_start < table->time_to_die)
 			return (1);
 	}
 	else
 	{
-		pthread_mutex_lock(&philo->philo_mutex);
 		time_since_last_meal = get_time() - philo->last_meal_time;
 		pthread_mutex_unlock(&philo->philo_mutex);
 		if (time_since_last_meal < table->time_to_die)
