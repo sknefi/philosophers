@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 20:00:08 by fkarika           #+#    #+#             */
-/*   Updated: 2025/06/27 20:00:09 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/06/27 20:03:36 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,6 @@ void	watchdog_routine(t_table *table)
 			kill_all_philo_processes(table);
 			exit(0);
 		}
-		precise_usleep(10);
+		precise_usleep(1000);
 	}
 }

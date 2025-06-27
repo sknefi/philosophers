@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 20:00:27 by fkarika           #+#    #+#             */
-/*   Updated: 2025/06/27 20:00:28 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/06/27 20:03:27 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,6 @@ void	*watchdog_routine(void *arg)
 
 	table = (t_table *)arg;
 	while (are_all_philos_alive(table) && !are_all_philos_full(table))
-		precise_usleep(1);
+		precise_usleep(1000);
 	return (NULL);
 }
