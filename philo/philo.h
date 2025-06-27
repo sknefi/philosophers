@@ -92,6 +92,7 @@ typedef struct s_table
 {
 	int				death_flag;
 	int				no_philosophers;
+	int				init_mutexes_success;
 	int				all_philos_full_flag;
 	long			start_time;
 	long			time_to_die;

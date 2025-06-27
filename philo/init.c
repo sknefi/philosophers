@@ -87,6 +87,9 @@ int	init_table(int argc, char **argv, t_table *table)
 	table->death_flag = 0;
 	table->start_time = get_time();
 	table->all_philos_full_flag = 0;
+	table->philos = NULL;
+	table->forks = NULL;
+	table->init_mutexes_success = 0;
 	if (init_args(argc, argv, table))
 		return (printf(ERR_IN), 1);
 	if (pthread_mutex_init(&table->print_mutex, NULL) != 0)
@@ -95,6 +98,7 @@ int	init_table(int argc, char **argv, t_table *table)
 		return (1);
 	if (pthread_mutex_init(&table->death_mutex, NULL) != 0)
 		return (1);
+	table->init_mutexes_success = 1;
 	if (init_philos(table))
 		return (1);
 	if (init_forks(table))

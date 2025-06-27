@@ -44,8 +44,11 @@ void	clean_table(t_table *table)
 		return ;
 	free_philos(table);
 	free_forks(table);
-	pthread_mutex_destroy(&table->print_mutex);
-	pthread_mutex_destroy(&table->all_philos_full_mutex);
-	pthread_mutex_destroy(&table->death_mutex);
+	if (table->init_mutexes_success)
+	{
+		pthread_mutex_destroy(&table->print_mutex);
+		pthread_mutex_destroy(&table->all_philos_full_mutex);
+		pthread_mutex_destroy(&table->death_mutex);
+	}
 	free(table);
 }

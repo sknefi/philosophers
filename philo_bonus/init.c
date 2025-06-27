@@ -72,6 +72,8 @@ static int	init_philos(t_table *table)
 int	init_table(int argc, char **argv, t_table *table)
 {
 	table->start_time = get_time();
+	table->philos = NULL;
+	table->sems = NULL;
 	if (init_args(argc, argv, table))
 		return (printf(ERR_IN), 1);
 	if (init_philos(table))
