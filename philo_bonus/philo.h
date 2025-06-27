@@ -11,6 +11,7 @@
 # include <semaphore.h>
 # include <fcntl.h>
 # include <signal.h>
+# include <sys/wait.h>
 
 // philo -> philosopher
 
