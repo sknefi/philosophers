@@ -54,3 +54,18 @@ void	solo_dinner(t_table *table)
 	print_msg(table, 1, MSG_FORK);
 	printf("%ld %d %s\n", table->time_to_die / 1000, 1, MSG_DIED);
 }
+
+void	think(t_table *table)
+{
+	long	thinking_time;
+
+	if (table->time_to_eat < table->time_to_die - table->time_to_sleep)
+	{
+		thinking_time = (table->time_to_die - table->time_to_eat
+				- table->time_to_sleep) / 2;
+		if (thinking_time > 30000)
+			thinking_time = 30000;
+		if (thinking_time > 0)
+			precise_usleep(thinking_time);
+	}
+}

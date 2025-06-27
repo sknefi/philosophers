@@ -254,6 +254,12 @@ void			free_dinner_args(t_dinner_args *dinner_args);
  * @param s2 string2
  * @return 0 if yes, 1 if not
  */
-int	ft_strcmp(const char *s1, const char *s2);
+int				ft_strcmp(const char *s1, const char *s2);
+
+/**
+ * @brief Think for a short period of time after philos sleep
+ * @param table table of the simulation
+ */
+void			think(t_table *table);
 
 #endif

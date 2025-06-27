@@ -35,7 +35,6 @@ static int	take_forks(t_table *table, t_philo *philo)
 static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 {
 	int		first_taken_fork_id;
-	long	thinking_time;
 
 	first_taken_fork_id = take_forks(table, philo);
 	pthread_mutex_lock(&philo->philo_mutex);
@@ -47,20 +46,12 @@ static void	take_forks_eat_think_sleep(t_table *table, t_philo *philo)
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->philo_mutex);
 	put_forks_down(philo, first_taken_fork_id);
-	if (is_philo_full(table, philo)) // maybe if he is full i need to end here
+	if (is_philo_full(table, philo))
 		return ;
 	print_msg(table, philo->id, MSG_SLEEP);
 	precise_usleep(table->time_to_sleep);
 	print_msg(table, philo->id, MSG_THINK);
-	if (table->time_to_eat < table->time_to_die - table->time_to_sleep)
-	{
-		thinking_time = (table->time_to_die - table->time_to_eat
-				- table->time_to_sleep) / 2;
-		if (thinking_time > 50000)
-			thinking_time = 50000;
-		if (thinking_time > 0)
-			precise_usleep(thinking_time);
-	}
+	think(table);
 }
 
 /**
