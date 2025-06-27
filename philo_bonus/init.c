@@ -36,7 +36,8 @@ static int	init_sems(t_table *table)
 		return (1);
 	sem_unlink(SEM_FORKS);
 	sem_unlink(SEM_PRINT);
-	sems->forks_sem = sem_open(SEM_FORKS, O_CREAT, 0644, table->no_philosophers);
+	sems->forks_sem = sem_open(SEM_FORKS, O_CREAT, 0644,
+			table->no_philosophers);
 	if (sems->forks_sem == SEM_FAILED)
 		return (1);
 	sems->print_sem = sem_open(SEM_PRINT, O_CREAT, 0644, 1);
@@ -45,6 +46,7 @@ static int	init_sems(t_table *table)
 	table->sems = sems;
 	return (0);
 }
+
 static int	init_philos(t_table *table)
 {
 	int		i;
@@ -60,7 +62,7 @@ static int	init_philos(t_table *table)
 		philos[i].is_full = 0;
 		philos[i].meals_eaten = 0;
 		philos[i].last_meal_time = get_time();
-		philos[i].pid = PID_NOT_INIT;
+		philos[i].pid = -1;
 		i++;
 	}
 	table->philos = philos;

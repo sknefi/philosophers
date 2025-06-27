@@ -28,17 +28,6 @@ static int	is_philo_alive(t_table *table, t_philo *philo)
 	return (res);
 }
 
-int	is_philo_full(t_table *table, t_philo *philo)
-{
-	if (table->num_times_each_philosopher_must_eat != -1
-		&& philo->meals_eaten >= table->num_times_each_philosopher_must_eat)
-	{
-		philo->is_full = 1;
-		return (1);
-	}
-	return (0);
-}
-
 /**
  * @brief Check if all the philosophers are full
  * @param table table of the simulation
@@ -58,6 +47,17 @@ static int	are_all_philos_full(t_table *table)
 	return (1);
 }
 
+int	is_philo_full(t_table *table, t_philo *philo)
+{
+	if (table->num_times_each_philosopher_must_eat != -1
+		&& philo->meals_eaten >= table->num_times_each_philosopher_must_eat)
+	{
+		philo->is_full = 1;
+		return (1);
+	}
+	return (0);
+}
+
 void	kill_all_philo_processes(t_table *table)
 {
 	int	i;
@@ -73,7 +73,7 @@ void	kill_all_philo_processes(t_table *table)
 
 void	watchdog_routine(t_table *table)
 {
-	int i;
+	int	i;
 
 	while (1)
 	{

@@ -24,19 +24,6 @@ long	ft_atol(const char *str)
 	return (sign * nb);
 }
 
-void	*ft_memset(void *b, int c, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len)
-	{
-		*(unsigned char *)(b + i) = (unsigned char)c;
-		i++;
-	}
-	return (b);
-}
-
 void	precise_usleep(long time_in_micro)
 {
 	long	start;

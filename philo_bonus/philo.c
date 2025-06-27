@@ -2,7 +2,6 @@
 
 static void	*philo_monitor(void *arg)
 {
-	long					time_since_last_meal;
 	t_table					*table;
 	t_philo					*philo;
 	t_philo_monitor_args	*philo_monitor_args;
@@ -15,34 +14,27 @@ static void	*philo_monitor(void *arg)
 		if (philo->meals_eaten == 0)
 		{
 			if ((get_time() - table->start_time) >= table->time_to_die)
-			{
-				print_msg(table, philo->id, MSG_DIED);
-				exit(1);
-			}
+				(print_msg(table, philo->id, MSG_DIED), exit(1));
 		}
 		else
 		{
-			time_since_last_meal = get_time() - philo->last_meal_time;
-			if (time_since_last_meal >= table->time_to_die)
-			{
-				print_msg(table, philo->id, MSG_DIED);
-				exit(1);
-			}
+			if (get_time() - philo->last_meal_time >= table->time_to_die)
+				(print_msg(table, philo->id, MSG_DIED), exit(1));
 		}
-		precise_usleep(10);
+		precise_usleep(1000);
 	}
 	return (NULL);
 }
 
 static void	dinner_routine(t_table *table, t_philo *philo)
 {
-	long					thinking_time;
 	pthread_t				watchdog_thread;
 	t_philo_monitor_args	philo_monitor_args;
-	
+
 	philo_monitor_args.table = table;
 	philo_monitor_args.philo = philo;
-	if (pthread_create(&watchdog_thread, NULL, &philo_monitor, &philo_monitor_args) != 0)
+	if (pthread_create(&watchdog_thread, NULL, &philo_monitor,
+			&philo_monitor_args) != 0)
 		exit(1);
 	pthread_detach(watchdog_thread);
 	while (!is_philo_full(table, philo))
@@ -52,21 +44,13 @@ static void	dinner_routine(t_table *table, t_philo *philo)
 		print_msg(table, philo->id, MSG_EAT);
 		precise_usleep(table->time_to_eat);
 		philo->meals_eaten++;
-		put_forks_down(table);	
+		put_forks_down(table);
 		if (is_philo_full(table, philo))
 			break ;
 		print_msg(table, philo->id, MSG_SLEEP);
 		precise_usleep(table->time_to_sleep);
 		print_msg(table, philo->id, MSG_THINK);
-		if (table->time_to_eat < table->time_to_die - table->time_to_sleep)
-		{
-			thinking_time = (table->time_to_die - table->time_to_eat
-					- table->time_to_sleep) / 2;
-			if (thinking_time > 30000)
-				thinking_time = 30000;
-			if (thinking_time > 0)
-				precise_usleep(thinking_time);
-		}
+		think(table);
 	}
 	exit(0);
 }
@@ -88,10 +72,7 @@ int	start_dinner(t_table *table)
 			dinner_routine(table, &table->philos[i]);
 		i++;
 	}
-	
-	// Wait for any process to finish
 	waitpid(-1, &status, 0);
-	// Kill all remaining processes
 	kill_all_philo_processes(table);
 	return (0);
 }
