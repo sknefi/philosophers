@@ -1,7 +1,50 @@
 #include "philo.h"
 
+static void	*philo_monitor(void *arg)
+{
+	long					time_since_last_meal;
+	t_table					*table;
+	t_philo					*philo;
+	t_philo_monitor_args	*philo_monitor_args;
+
+	philo_monitor_args = (t_philo_monitor_args *)arg;
+	table = philo_monitor_args->table;
+	philo = philo_monitor_args->philo;
+	while (1)
+	{
+		if (philo->meals_eaten == 0)
+		{
+			if ((get_time() - table->start_time) >= table->time_to_die)
+			{
+				print_msg(table, philo->id, MSG_DIED);
+				exit(1);
+			}
+		}
+		else
+		{
+			time_since_last_meal = get_time() - philo->last_meal_time;
+			if (time_since_last_meal >= table->time_to_die)
+			{
+				print_msg(table, philo->id, MSG_DIED);
+				exit(1);
+			}
+		}
+		precise_usleep(10);
+	}
+	return (NULL);
+}
+
 static void	dinner_routine(t_table *table, t_philo *philo)
 {
+	long					thinking_time;
+	pthread_t				watchdog_thread;
+	t_philo_monitor_args	philo_monitor_args;
+	
+	philo_monitor_args.table = table;
+	philo_monitor_args.philo = philo;
+	if (pthread_create(&watchdog_thread, NULL, &philo_monitor, &philo_monitor_args) != 0)
+		exit(1);
+	pthread_detach(watchdog_thread);
 	while (!is_philo_full(table, philo))
 	{
 		take_forks(table, philo);
@@ -9,21 +52,20 @@ static void	dinner_routine(t_table *table, t_philo *philo)
 		print_msg(table, philo->id, MSG_EAT);
 		precise_usleep(table->time_to_eat);
 		philo->meals_eaten++;
-		put_forks_down(table);
-		
+		put_forks_down(table);	
 		if (is_philo_full(table, philo))
-			break;
-			
+			break ;
 		print_msg(table, philo->id, MSG_SLEEP);
 		precise_usleep(table->time_to_sleep);
 		print_msg(table, philo->id, MSG_THINK);
-		if (table->no_philosophers % 2 == 0)
+		if (table->time_to_eat < table->time_to_die - table->time_to_sleep)
 		{
-			if (table->time_to_die > (table->time_to_eat + table->time_to_sleep))
-			{
-				precise_usleep((table->time_to_die - table->time_to_eat 
-					- table->time_to_sleep) / 2);
-			}
+			thinking_time = (table->time_to_die - table->time_to_eat
+					- table->time_to_sleep) / 2;
+			if (thinking_time > 30000)
+				thinking_time = 30000;
+			if (thinking_time > 0)
+				precise_usleep(thinking_time);
 		}
 	}
 	exit(0);
@@ -33,22 +75,9 @@ int	start_dinner(t_table *table)
 {
 	int		i;
 	int		status;
-	pid_t	watchdog_pid;
 
 	if (table->no_philosophers == 1)
-	{
-		solo_dinner(table);
-		return (0);
-	}
-	
-	// Start watchdog process
-	watchdog_pid = fork();
-	if (watchdog_pid == -1)
-		return (1);
-	if (watchdog_pid == 0)
-		watchdog_routine(table);
-	
-	// Start philosopher processes
+		return (solo_dinner(table), 0);
 	i = 0;
 	while (i < table->no_philosophers)
 	{
@@ -60,16 +89,9 @@ int	start_dinner(t_table *table)
 		i++;
 	}
 	
-	// Wait for any process to finish (either philosopher or watchdog)
+	// Wait for any process to finish
 	waitpid(-1, &status, 0);
-	
 	// Kill all remaining processes
 	kill_all_philo_processes(table);
-	kill(watchdog_pid, SIGKILL);
-	
-	// Wait for all child processes to avoid zombies
-	while (waitpid(-1, &status, WNOHANG) > 0)
-		;
-	
 	return (0);
 }

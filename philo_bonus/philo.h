@@ -77,6 +77,12 @@ typedef struct s_table
 	t_philo	*philos;
 }	t_table;
 
+typedef struct s_philo_monitor_args 
+{
+	t_philo	*philo;
+	t_table	*table;
+}	t_philo_monitor_args;
+
 long	get_time(void);
 long	ft_atol(const char *str);
 void	precise_usleep(long time_in_micro);
