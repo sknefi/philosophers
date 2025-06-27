@@ -9,6 +9,8 @@ OBJDIR = obj
 SRCS = 	main.c \
 		init.c \
 		philo.c \
+		philo_utils.c \
+		watchdog.c \
 		utils.c \
 		clean.c
 

@@ -36,15 +36,11 @@ static int	init_sems(t_table *table)
 		return (1);
 	sem_unlink(SEM_FORKS);
 	sem_unlink(SEM_PRINT);
-	sem_unlink(SEM_DEATH);
-	sem_unlink(SEM_ALL_PHILOS_FULL);
 	sems->forks_sem = sem_open(SEM_FORKS, O_CREAT, 0644, table->no_philosophers);
+	if (sems->forks_sem == SEM_FAILED)
+		return (1);
 	sems->print_sem = sem_open(SEM_PRINT, O_CREAT, 0644, 1);
-	sems->death_sem = sem_open(SEM_DEATH, O_CREAT, 0644, 1);
-	sems->all_philos_full_sem = sem_open(SEM_ALL_PHILOS_FULL, O_CREAT, 0644, 1);
-	if (sems->forks_sem == SEM_FAILED || sems->all_philos_full_sem == SEM_FAILED
-		|| sems->print_sem == SEM_FAILED
-		|| sems->death_sem == SEM_FAILED)
+	if (sems->print_sem == SEM_FAILED)
 		return (1);
 	table->sems = sems;
 	return (0);

@@ -10,6 +10,7 @@
 # include <string.h>
 # include <semaphore.h>
 # include <fcntl.h>
+# include <signal.h>
 
 // philo -> philosopher
 
@@ -45,8 +46,6 @@
 
 # define SEM_FORKS "/sem_forks"
 # define SEM_PRINT "/sem_print"
-# define SEM_DEATH "/sem_death"
-# define SEM_ALL_PHILOS_FULL "/sem_all_philos_full"
 
 # define PID_NOT_INIT -2
 typedef struct s_philo
@@ -60,27 +59,22 @@ typedef struct s_philo
 
 typedef struct s_sems
 {
-	sem_t	*forks;
+	sem_t	*forks_sem;
 	sem_t	*print_sem;
-	sem_t	*death_sem;
-	sem_t	*all_philos_full_sem;
 }	t_sems;
 
 typedef struct s_table
 {
 	int		no_philosophers;
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
-	int		num_times_each_philosopher_must_eat;
+	long	time_to_die;
+	long	time_to_eat;
+	long	time_to_sleep;
+	long	num_times_each_philosopher_must_eat;
 
 	long	start_time;
 
 	t_sems	*sems;
 	t_philo	*philos;
-
-	int		death_flag;      // Optional: might be tracked via sem
-	int		all_philos_full_flag;
 }	t_table;
 
 long	get_time(void);
@@ -90,5 +84,12 @@ int		ft_strcmp(const char *s1, const char *s2);
 int		init_table(int argc, char **argv, t_table *table);
 int		start_dinner(t_table *table);
 void	clean_table(t_table *table);
+void	solo_dinner(t_table *table);
+void	take_forks(t_table *table, t_philo *philo);
+void	put_forks_down(t_table *table);
+void	print_msg(t_table *table, int philo_id, char *msg);
+void	watchdog_routine(t_table *table);
+int		is_philo_full(t_table *table, t_philo *philo);
+void	kill_all_philo_processes(t_table *table);
 
 #endif
