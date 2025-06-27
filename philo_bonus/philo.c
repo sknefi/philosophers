@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/27 20:00:22 by fkarika           #+#    #+#             */
+/*   Updated: 2025/06/27 20:00:23 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static void	*philo_monitor(void *arg)
@@ -9,7 +21,6 @@ static void	*philo_monitor(void *arg)
 	philo_monitor_args = (t_philo_monitor_args *)arg;
 	table = philo_monitor_args->table;
 	philo = philo_monitor_args->philo;
-	free(philo_monitor_args);
 	while (1)
 	{
 		if (philo->meals_eaten == 0)
@@ -30,15 +41,12 @@ static void	*philo_monitor(void *arg)
 static void	dinner_routine(t_table *table, t_philo *philo)
 {
 	pthread_t				watchdog_thread;
-	t_philo_monitor_args	*philo_monitor_args;
+	t_philo_monitor_args	philo_monitor_args;
 
-	philo_monitor_args = malloc(sizeof(t_philo_monitor_args));
-	if (!philo_monitor_args)
-		exit(1);
-	philo_monitor_args->table = table;
-	philo_monitor_args->philo = philo;
+	philo_monitor_args.table = table;
+	philo_monitor_args.philo = philo;
 	if (pthread_create(&watchdog_thread, NULL, &philo_monitor,
-			philo_monitor_args) != 0)
+			&philo_monitor_args) != 0)
 		exit(1);
 	pthread_detach(watchdog_thread);
 	while (!is_philo_full(table, philo))

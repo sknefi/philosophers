@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/27 20:00:14 by fkarika           #+#    #+#             */
+/*   Updated: 2025/06/27 20:00:15 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -23,27 +35,27 @@
 # define O "\033[38;5;208m"
 # define RES "\033[0m"
 
-// // messages for the print_msg function
-// # define MSG_EAT  "is eating"
-// # define MSG_SLEEP "is sleeping"
-// # define MSG_THINK "is thinking"
-// # define MSG_FORK "has taken a fork"
-// # define MSG_DIED "died"
+// messages for the print_msg function
+# define MSG_EAT  "is eating"
+# define MSG_SLEEP "is sleeping"
+# define MSG_THINK "is thinking"
+# define MSG_FORK "has taken a fork"
+# define MSG_DIED "died"
 
-// // error messages
-// # define ERR_IN "Error: Invalid input\n"
-// # define ERR_ARG "Error: Invalid number of arguments\n"
-// # define ERR_GEN "Error: General error (malloc, mutex, etc.)\n"
+// error messages
+# define ERR_IN "Error: Invalid input\n"
+# define ERR_ARG "Error: Invalid number of arguments\n"
+# define ERR_GEN "Error: General error (malloc, mutex, etc.)\n"
 
 // /* I love norminette
-# define MSG_EAT  G "is eating" RES
-# define MSG_SLEEP Y "is sleeping" RES
-# define MSG_THINK O "is thinking" RES
-# define MSG_FORK B "has taken a fork" RES
-# define MSG_DIED R "died" RES
-# define ERR_IN R "Error: Invalid input\n" RES
-# define ERR_ARG R "Error: Invalid number of arguments\n" RES
-# define ERR_GEN R "Error: General error (malloc, mutex, etc.)\n" RES
+// # define MSG_EAT  G "is eating" RES
+// # define MSG_SLEEP Y "is sleeping" RES
+// # define MSG_THINK O "is thinking" RES
+// # define MSG_FORK B "has taken a fork" RES
+// # define MSG_DIED R "died" RES
+// # define ERR_IN R "Error: Invalid input\n" RES
+// # define ERR_ARG R "Error: Invalid number of arguments\n" RES
+// # define ERR_GEN R "Error: General error (malloc, mutex, etc.)\n" RES
 
 # define SEM_FORKS "/sem_forks"
 # define SEM_PRINT "/sem_print"
