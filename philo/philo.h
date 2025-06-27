@@ -147,7 +147,7 @@ long			get_time(void);
 void			precise_usleep(long time_in_micro);
 
 /**
- * @brief Initialize the table
+ * @brief Initialize the table with the arguments given in input
  * @param argc number of arguments
  * @param argv arguments
  * @param table table to initialize
