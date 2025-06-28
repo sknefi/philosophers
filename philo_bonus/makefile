@@ -11,7 +11,8 @@ SRCS = 	main.c \
 		philo.c \
 		philo_utils.c \
 		watchdog.c \
-		utils.c \
+		utils_01.c \
+		utils_02.c \
 		clean.c
 
 OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))

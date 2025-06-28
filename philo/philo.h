@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 20:00:33 by fkarika           #+#    #+#             */
-/*   Updated: 2025/06/27 20:00:34 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/06/27 21:54:10 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,5 +274,11 @@ int				ft_strcmp(const char *s1, const char *s2);
  * @param table table of the simulation
  */
 void			think(t_table *table);
+
+/**
+ * @brief Check if the input is valid
+ * @return 1 if yes (only numbers), 0 else
+ */
+int				check_for_only_nums(int argc, char **argv);
 
 #endif

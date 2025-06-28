@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 20:00:51 by fkarika           #+#    #+#             */
-/*   Updated: 2025/06/27 20:00:52 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/06/27 22:03:22 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
  */
 static int	init_args(int argc, char **argv, t_table *table)
 {
+	if (check_for_only_nums(argc, argv))
+		return (1);
 	table->no_philosophers = ft_atol(argv[1]);
 	table->time_to_die = ft_atol(argv[2]) * 1000;
 	table->time_to_eat = ft_atol(argv[3]) * 1000;

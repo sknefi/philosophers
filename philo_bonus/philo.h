@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 20:00:14 by fkarika           #+#    #+#             */
-/*   Updated: 2025/06/27 20:00:15 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/06/27 21:53:55 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,5 +222,11 @@ void	solo_dinner(t_table *table);
  * @param table table to monitor
  */
 void	watchdog_routine(t_table *table);
+
+/**
+ * @brief Check if the input is valid
+ * @return 1 if yes (only numbers), 0 else
+*/
+int		check_for_only_nums(int argc, char **argv);
 
 #endif

@@ -7,7 +7,8 @@ SRCDIR = .
 OBJDIR = obj
 
 SRCS = 	main.c \
-		utils.c \
+		utils_01.c \
+		utils_02.c \
 		init.c \
 		clean.c \
 		philo.c \
