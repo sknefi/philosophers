@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 20:00:22 by fkarika           #+#    #+#             */
-/*   Updated: 2025/06/27 20:00:23 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/06/28 12:57:25 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,8 @@ static void	*philo_monitor(void *arg)
 	return (NULL);
 }
 
-static void	dinner_routine(t_table *table, t_philo *philo)
+static void	philo_routine(t_table *table, t_philo *philo)
 {
-	pthread_t				watchdog_thread;
-	t_philo_monitor_args	philo_monitor_args;
-
-	philo_monitor_args.table = table;
-	philo_monitor_args.philo = philo;
-	if (pthread_create(&watchdog_thread, NULL, &philo_monitor,
-			&philo_monitor_args) != 0)
-		exit(1);
-	pthread_detach(watchdog_thread);
 	while (!is_philo_full(table, philo))
 	{
 		take_forks(table, philo);
@@ -64,6 +55,22 @@ static void	dinner_routine(t_table *table, t_philo *philo)
 		print_msg(table, philo->id, MSG_THINK);
 		think(table);
 	}
+}
+
+static void	dinner_routine(t_table *table, t_philo *philo)
+{
+	pthread_t				watchdog_thread;
+	t_philo_monitor_args	philo_monitor_args;
+
+	philo_monitor_args.table = table;
+	philo_monitor_args.philo = philo;
+	if (pthread_create(&watchdog_thread, NULL, &philo_monitor,
+			&philo_monitor_args) != 0)
+		exit(1);
+	pthread_detach(watchdog_thread);
+	if (philo->id % 2 == 0)
+		precise_usleep(1000);
+	philo_routine(table, philo);
 	exit(0);
 }
 

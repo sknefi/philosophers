@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 20:00:40 by fkarika           #+#    #+#             */
-/*   Updated: 2025/06/27 21:20:14 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/06/28 11:56:04 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ static void	*dinner_routine(void *arg)
 	dinner_args = (t_dinner_args *)arg;
 	table = dinner_args->table;
 	philo = dinner_args->philo;
+	if (philo->id % 2 == 0)
+		precise_usleep(1000);
 	while (!is_simulation_over(table) && !is_philo_full(table, philo))
 		take_forks_eat_think_sleep(table, philo);
 	return (NULL);
