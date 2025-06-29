@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkarika <fkarika@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 20:00:22 by fkarika           #+#    #+#             */
-/*   Updated: 2025/06/28 12:57:25 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/06/29 11:48:57 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	dinner_routine(t_table *table, t_philo *philo)
 		exit(1);
 	pthread_detach(watchdog_thread);
 	if (philo->id % 2 == 0)
-		precise_usleep(1000);
+		precise_usleep(200);
 	philo_routine(table, philo);
 	exit(0);
 }
